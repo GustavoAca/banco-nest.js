@@ -1,0 +1,36 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Injectable } from '@nestjs/common';
+import { CreateBankAccountDto } from './dto/create-bank-account.dto';
+import { UpdateBankAccountDto } from './dto/update-bank-account.dto';
+import { Repository } from 'typeorm';
+import { AppService } from 'src/app.service';
+import { BankAccount } from './entities/bank-account.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+
+@Injectable()
+export class BankAccountsService {
+  constructor(
+    @InjectRepository(BankAccount)
+    private bankAccountRepo: Repository<BankAccount>,
+  ) { }
+
+  create(createBankAccountDto: CreateBankAccountDto) {
+    return this.bankAccountRepo.save(createBankAccountDto);
+  }
+
+  findAll() {
+    return this.bankAccountRepo.find();
+  }
+
+  findOne(id: string) {
+    return this.bankAccountRepo.findOneOrFail({ where: { id } });
+  }
+
+  // update(id: number, updateBankAccountDto: UpdateBankAccountDto) {
+  //   return `This action updates a #${id} bankAccount`;
+  // }
+
+  // remove(id: number) {
+  //   return `This action removes a #${id} bankAccount`;
+  // }
+}
